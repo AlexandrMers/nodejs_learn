@@ -2,11 +2,14 @@ import express from 'express';
 
 import {SigKillController} from "./sigController";
 import {Loop} from "./loop";
+import {fileModule} from "./fileModule";
 
 const app = express();
 
-const signalsController = new SigKillController(process);
-const loop = new Loop();
+// const signalsController = new SigKillController(process);
+// const loop = new Loop();
+
+fileModule(app);
 
 // app.use(cookieParser());
 
@@ -18,28 +21,31 @@ const loop = new Loop();
 
 // killController.processExit();
 
-const handleAfterRunServer = () => {
-    loop.showDifferent();
+//Run files module
 
-    signalsController.subscribeOnSignal(
-        "SIGINT",
-        () => {
-            console.log('SIGINT !!!');
-        }
-    );
 
-    setTimeout(() => {
-        process.exitCode = 22;
-        process.exit(0);
-    }, 4000);
-}
+// const handleAfterRunServer = () => {
+//     loop.showDifferent();
+//
+//     signalsController.subscribeOnSignal(
+//         "SIGINT",
+//         () => {
+//             console.log('SIGINT !!!');
+//         }
+//     );
+//
+//     setTimeout(() => {
+//         process.exitCode = 22;
+//         process.exit(0);
+//     }, 4000);
+// }
 
 // setTimeout(() => {
 //     signalsController.processExit(22);
 // }, 3000);
 
 
-app.post('/kill-process', signalsController.killProcess);
+// app.post('/kill-process', signalsController.killProcess);
 
 // app.get('/get', (req, res) => {
 //     return res.json({
@@ -155,5 +161,5 @@ const port = 3000;
 const host = 'localhost';
 
 app.listen(port,  host, () => {
-    handleAfterRunServer();
+    console.log(`listening on ${host}/${port}`);
 })
